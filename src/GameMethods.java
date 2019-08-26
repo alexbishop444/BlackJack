@@ -53,8 +53,12 @@ public class GameMethods {
 
     public int total(ArrayList<Card> playerdeck) {
         Integer sum = 0;
-        for (Card item:playerdeck) {
-            sum += IntStream.of(item.value).sum();
+        for (Card item : playerdeck) {
+            if ((item.getValue() == 11) && (IntStream.of(item.value).sum() < 22)) {
+                item.setValue(1);
+                System.out.println("value changed to 1");
+            }
+                sum += IntStream.of(item.value).sum();
         }
         return sum;
     }
