@@ -27,38 +27,36 @@ public class GameMethods {
     }
 
     public ArrayList hit(ArrayList<Card> playerdeck) {
-            boolean isItemDrawn = false;
-            while(!isItemDrawn) {
-                playerdeck.add(Random(deck));
-                Card item = playerdeck.get(playerdeck.size()-1);
+        boolean isItemDrawn = false;
+        while(!isItemDrawn) {
+            playerdeck.add(Random(deck));
+            Card item = playerdeck.get(playerdeck.size()-1);
             if(item.isDrawn()) {
                 playerdeck.remove(item);
-            }
-            else {
+            } else {
                 item.setDrawn(true);
                 isItemDrawn = true;
             }
-            }
+        }
+
 
         return playerdeck;
     }
 
-    public ArrayList hitTest() {
-        ArrayList test = new ArrayList();
-        for (int i = 0; i < deck.length ; i++) {
-            hit(test);
-        }
-        return test;
+    public ArrayList hitNoCheck(ArrayList<Card> playerdeck) {
+        playerdeck.add(Random(deck));
+        return playerdeck;
     }
 
-    public int total(ArrayList<Card> playerdeck) {
+    public int total(ArrayList<Card> playerDeck) {
         Integer sum = 0;
-        for (Card item : playerdeck) {
-            if ((item.getValue() == 11) && (IntStream.of(item.value).sum() < 22)) {
+        for (Card item : playerDeck) {
+            sum += IntStream.of(item.value).sum();
+            if ((item.getValue() == 11) && (sum > 21)) {
+                System.out.println(IntStream.of(item.value).sum());
                 item.setValue(1);
                 System.out.println("value changed to 1");
             }
-                sum += IntStream.of(item.value).sum();
         }
         return sum;
     }
@@ -133,7 +131,7 @@ public class GameMethods {
             System.out.println("It's a draw!");
             System.out.println("Your total: " + total(player));
             System.out.println("Dealer total: " + total(dealer));
-        } else if (total(player) < total(dealer) && bustDealer && !bustPlayer) {
+        } else if (bustDealer && !bustPlayer) {
             System.out.println("Player wins");
             System.out.println("Your total: " + total(player));
             System.out.println("Dealer total: " + total(dealer));
